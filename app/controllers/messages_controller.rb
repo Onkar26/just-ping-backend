@@ -1,10 +1,12 @@
 class MessagesController < ApplicationController
 
     def get_messages
-        render :json => Message.where("from_user_id = '#{request.headers['From-User-Id']}' or to_user_id = '#{To-User-Id}'")
+        render :json => Message.where("(from_user_id = ? and to_user_id = ?) or (to_user_id = ? and from_user_id = ?)",  request.headers['From-User-Id'], request.headers['To-User-Id'], request.headers['From-User-Id'], request.headers['To-User-Id'])
     end
 
     def send_message
+        puts params
+
         message = Message.new(from_user_id: params[:from_user_id], to_user_id: params[:to_user_id], message: params[:message], status: 'active')
 
         unless message.save

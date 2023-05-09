@@ -16,10 +16,12 @@ class UsersController < ApplicationController
     end
 
     def validate_user
-        user = User.where(name = params[:name], password_digest: params[:password_digest]).first
+        # render :json => params
+
+        user = User.where(name: params[:name], password_digest: params[:password_digest]).first
 
         unless user.present?
-            render :json => self.errors.add(:user, 'is invalid!')
+            render :json => 'user is invalid!'
             return
         end
 
